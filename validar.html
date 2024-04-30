@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta de Datos - Prueba Técnica</title>
+  <!-- Enlace a Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+  <!-- Encabezado -->
+  <header class="bg-gray-800 text-white text-center py-4">
+    <h1 class="text-xl font-bold">Prueba Técnica - Consulta de Datos</h1>
+  </header>
+
+  <!-- Contenedor principal -->
+  <div class="container mx-auto py-8">
+
+    <!-- Contenedor para mostrar los datos -->
+    <div id="dataContainer" class="w-full max-w-lg mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Datos</h2>
+      <div id="userData" class="border border-gray-300 rounded p-4">
+        <!-- Los datos se mostrarán aquí -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Script jQuery para obtener los datos -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      const apiUrl = 'https://localhost:7288/api/Usuariosnegocios';
+
+      $.getJSON(apiUrl)
+        .done(function(data) {
+          if (data.length > 0) {
+            let userDataHtml = '';
+            data.forEach(function(user) {
+              userDataHtml += `
+                <div class="mb-4">
+                  <p><strong>Nombre de usuario:</strong> ${user.nombreUsuario}</p>
+                  <p><strong>Correo Electrónico:</strong> ${user.correoElectronico}</p>
+                  <p><strong>Nombre del negocio:</strong> ${user.nombreNegocio}</p>
+                  <p><strong>Dirección del negocio:</strong> ${user.dirección}</p>
+                  <p><strong>RUC del negocio:</strong> ${user.ruc}</p>
+                </div>
+              `;
+            });
+            $('#userData').html(userDataHtml);
+          } else {
+            alert('No se encontraron datos.');
+          }
+        })
+        .fail(function(jqxhr, textStatus, error) {
+          const errorMessage = `${textStatus}: ${error}`;
+          console.error('Error al hacer la solicitud:', errorMessage);
+          alert('Ocurrió un error al procesar la solicitud. Por favor, inténtelo de nuevo.');
+        });
+    });
+  </script>
+
+</body>
+</html>

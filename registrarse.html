@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Usuario - Prueba Técnica</title>
+  <!-- Enlace a Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Enlace a jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Encabezado -->
+  <header class="bg-gray-800 text-white text-center py-4">
+    <h1 class="text-xl font-bold">Prueba Técnica</h1>
+  </header>
+
+  <!-- Contenedor principal -->
+  <div class="container mx-auto py-8">
+
+    <!-- Formulario de registro de usuario -->
+    <div class="w-full max-w-lg mx-auto">
+      <h2 class="text-2xl font-bold mb-4">Registro de Usuario</h2>
+      <form id="userFormElement" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">
+            Nombre
+          </label>
+          <input id="nombre" type="text" placeholder="Nombre" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+            Correo electrónico
+          </label>
+          <input id="email" type="email" placeholder="Correo electrónico" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+            Contraseña
+          </label>
+          <input id="password" type="password" placeholder="Contraseña" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="nombreNegocio">
+              Nombre del Negocio
+            </label>
+            <input id="nombreNegocio" type="text" placeholder="Nombre del Negocio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="direccion">
+              Dirección
+            </label>
+            <input id="direccion" type="text" placeholder="Dirección" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="ruc">
+              RUC
+            </label>
+            <input id="ruc" type="text" placeholder="RUC" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div class="flex items-center justify-between">
+            <button id="userSubmitButton" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              Registrar Usuario
+            </button>
+          </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Evento de envío del formulario de registro de usuario y empresa
+    $('#userFormElement').submit(async function(event) {
+      event.preventDefault();
+      
+      // Validar campos
+      const nombre = $('#nombre').val();
+      const email = $('#email').val();
+      const password = $('#password').val();
+      const nombreNegocio = $('#nombreNegocio').val();
+      const direccion = $('#direccion').val();
+      const ruc = $('#ruc').val();
+
+      if (nombre.trim() === '' || email.trim() === '' || password.trim() === '' ||
+          nombreNegocio.trim() === '' || direccion.trim() === '' || ruc.trim() === '') {
+        alert('Por favor, complete todos los campos.');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Por favor, introduzca un correo electrónico válido.');
+        return;
+      }
+
+      // Construir objeto de datos
+      const userData = {
+        nombreUsuario: nombre,
+        correoElectronico: email,
+        contraseña: password,
+        nombreNegocio: nombreNegocio,
+        dirección: direccion,
+        ruc: ruc
+      };
+
+      // Enviar solicitud POST a la API
+      $.ajax({
+        url: 'https://localhost:7288/api/Usuariosnegocios',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(userData),
+        success: function(data) {
+          // Manejar la respuesta exitosa
+          alert('Registro exitoso.');
+        },
+        error: function(xhr, status, error) {
+          // Manejar errores
+          alert('Error al registrar. Por favor, inténtelo de nuevo.');
+          console.error('Error al registrar:', error);
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
